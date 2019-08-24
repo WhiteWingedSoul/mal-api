@@ -1,5 +1,5 @@
-const express = require('express')
-const router = require('./route')
+import express from 'express';
+import route from './route';
 
 const app = express()
 app.get('/', (req, res) => res.send("Hello World Too"))
