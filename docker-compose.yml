@@ -1,0 +1,16 @@
+# Specify docker compose version
+version: "3"
+services:
+  console:
+    # Configuration option that is applied at build time
+    build:
+      # Path to directory that contains Dockerfile
+      context: .
+      dockerfile: Dockerfile
+    ports:
+    - "3000:3000"
+    volumes:
+    - "./:/app/"
+    - "/app/node_modules"
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/my-anime-list-25996f71eb89.json
