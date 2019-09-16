@@ -1,0 +1,42 @@
+name: Build and deploy MAL api to Cloud Function
+
+on: 
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Make node build
+
+    runs-on: ubuntu-latest
+
+    # Define a build matrix, a set of different configurations of the virtual environment
+    strategy:
+      matrix:
+        node-version: 8.15.0
+
+    steps:
+    - name: Checkout to src folder
+    # Always use tagged version, never use master branch directly
+      uses: actions/checkout@v1
+    # Strategy only declare the environment, manual install is still necessary afterward
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: npm install, build, and test
+      run: |
+        npm install
+        npm run build --if-present
+        npm test
+    - name: Store build artifact for deploy step
+      uses: actions/upload-artifact@v1
+      with:
+        name: build-artifact
+        path: dist/
+      env:
+        CI: true
+
+    
+
